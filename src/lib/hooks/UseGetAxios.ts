@@ -1,54 +1,55 @@
 import {
-	UseQueryResult,
-	useQuery,
-	useQueryClient,
+  UseQueryResult,
+  useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { UseGetAxiosProps } from "../models/globals/AxiosProps";
 import api from "../instances/axios";
+import { UseGetAxiosProps } from "../models/globals/AxiosProps";
 
 function useGetAxios<T>(props: UseGetAxiosProps) {
-	const {
-		config,
-		queryKey,
-		enabled = true,
-		invalidateQueryKey,
-		queryParams,
-		removeQueryKey,
-	} = props;
+  const {
+    config,
+    queryKey,
+    enabled = true,
+    invalidateQueryKey,
+    queryParams,
+    removeQueryKey,
+  } = props;
 
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-	const axiosGet = async () => {
-		const response = await api({
-			...config,
-			params: queryParams,
-		});
+  const axiosGet = async () => {
+    const response = await api({
+      ...config,
+      params: queryParams,
+    });
 
-		return response.data;
-	};
+    return response.data;
+  };
 
-	const result: UseQueryResult<T> = useQuery({
-		queryKey,
-		queryFn: axiosGet,
-		enabled,
-	});
+  const result: UseQueryResult<T> = useQuery({
+    queryKey,
+    queryFn: axiosGet,
+    enabled,
+    refetchOnWindowFocus: false,
+  });
 
-	useEffect(() => {
-		if (result.status === "success" && invalidateQueryKey) {
-			queryClient.invalidateQueries({ queryKey: invalidateQueryKey });
-		}
+  useEffect(() => {
+    if (result.status === "success" && invalidateQueryKey) {
+      queryClient.invalidateQueries({ queryKey: invalidateQueryKey });
+    }
 
-		if (result.status === "success" && removeQueryKey) {
-			queryClient.removeQueries({ queryKey: removeQueryKey });
-		}
+    if (result.status === "success" && removeQueryKey) {
+      queryClient.removeQueries({ queryKey: removeQueryKey });
+    }
 
-		if (result.status === "error") {
-			console.log(result.error);
-		}
-	}, [result.status]);
+    if (result.status === "error") {
+      console.log(result.error);
+    }
+  }, [result.status]);
 
-	return result;
+  return result;
 }
 
 export default useGetAxios;

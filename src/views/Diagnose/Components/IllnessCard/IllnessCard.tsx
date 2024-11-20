@@ -54,6 +54,14 @@ function IllnessCard(props: IllnessCardProps) {
             <Text fw={500}>Penyakit Tidak Ditemukan</Text>
             <Badge color="red">Tidak Ditemukan</Badge>
           </Group>
+          <Divider label="Deskripsi" mb={"lg"} />
+          <Stack>
+            <Text size="sm" c="dimmed">
+              Gejala yang anda masukkan tidak sesuai dengan gejala setiap
+              penyakit. Silahkan input lebih banyak gejala atau cek kembali
+              gejala yang anda masukkan.
+            </Text>
+          </Stack>
         </Card>
       )}
     </>

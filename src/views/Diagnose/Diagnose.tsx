@@ -1,10 +1,14 @@
 import {
+  Badge,
   Button,
   Card,
   Container,
   Divider,
+  Group,
+  LoadingOverlay,
   MultiSelect,
   Stack,
+  Text,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -61,8 +65,22 @@ function Diagnose() {
         </Stack>
         <Divider />
         <Stack>
-          {diagnosesArray?.length === 0 ? (
-            <Card></Card>
+          {isFetching && (
+            <LoadingOverlay
+              visible={isFetching}
+              zIndex={1000}
+              overlayProps={{ radius: "sm", blur: 2 }}
+            />
+          )}
+          {diagnosesArray?.length === 0 && !isFetching ? (
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Group mt="md" mb="xs">
+                <Text fz={"h3"} fw={500}>
+                  Silahkan Masukkan Gejala
+                </Text>
+                <Badge color="yellow">Belum ada gejala yang diinput</Badge>
+              </Group>
+            </Card>
           ) : (
             diagnosesArray?.map((diagnose) => (
               <IllnessCard illness={diagnose} />

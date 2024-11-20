@@ -13,7 +13,7 @@ function DiagnoseController() {
 
   const [diagnosesArray, setDiagnosesArray] = useState<
     Array<string> | undefined
-  >(undefined);
+  >([]);
 
   const symptoms = [
     "burning",
